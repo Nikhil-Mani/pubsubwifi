@@ -58,6 +58,18 @@ static void espnow_send_cb(const esp_now_send_info_t *tx_info,
   xQueueSend(espnow_queue, &event, ESPNOW_MAXDELAY);
 }
 
+static void espnow_recv_cb(const esp_now_recv_info_t *tx_info,
+                           esp_now_send_status_t status) {
+  espnow_event_t event;
+  espnow_event_recv_cb_t *callback = event.info.recv_cb;
+
+  event.id = ESPNOW_RECV_CB;
+  // this is mostly wrong
+  mempy(callback->mac_addr, tx_info->des_addr, ESP_NOW_ETH_ALEN);
+
+  ESP_LOGI(TAG, "Here is the data %hhu", )
+}
+
 esp_err_t init() { esp_now_init(); }
 
 void app_main(void) {}
